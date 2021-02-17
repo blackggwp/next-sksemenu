@@ -9,7 +9,7 @@ import Box from '@material-ui/core/Box';
 import Menu from './Menu';
 import { useEffect } from 'react';
 
-function TabPanel(props) {
+function TabPanel(props: { [x: string]: any; children: React.ReactNode; value: string; index: string; }) {
   const { children, value, index, ...other } = props;
 
   return (
@@ -31,11 +31,11 @@ function TabPanel(props) {
 
 TabPanel.propTypes = {
   children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
+  index: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
 };
 
-function a11yProps(index) {
+function a11yProps(index: string) {
   return {
     id: `wrapped-tab-${index}`,
     'aria-controls': `wrapped-tabpanel-${index}`,
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Home({ brandid, brandType }) {
+const Home: React.FC<MenuProps> = ({ brandid, brandType }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState('one');
   const [isS81, setIsS81] = React.useState(false);
@@ -61,8 +61,8 @@ export default function Home({ brandid, brandType }) {
     }
   }, [brandid])
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setValue(e.target.value);
   };
 
   return (
@@ -70,7 +70,8 @@ export default function Home({ brandid, brandType }) {
       <AppBar position="static" style={brandType === 'catalogue' ? null : { display: "none" }} >
         <Tabs value={value}
           variant="fullWidth"
-          onChange={handleChange} aria-label="wrapped label tabs example">
+          onChange={handleChange}
+          aria-label="wrapped label tabs example">
           {!isS81 &&
             <Tab
               value="one"
@@ -99,3 +100,5 @@ export default function Home({ brandid, brandType }) {
     </div>
   );
 }
+
+export default Home

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import Home from "../../components/Home";
 
-export default function Menu() {
+const Catalogue: React.FC = () => {
   const router = useRouter()
   const { brandid } = router.query
 
@@ -9,10 +9,12 @@ export default function Menu() {
     <div>
       {brandid &&
         <Home
-          brandid={brandid}
-          brandType="menu"
+          brandid={String(brandid)}
+          brandType="catalogue"
         />
       }
     </div>
   );
 }
+
+export default Catalogue

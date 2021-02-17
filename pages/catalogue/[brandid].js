@@ -10,7 +10,7 @@ export default function Catalogue() {
       {brandid &&
         <Home
           brandid={brandid}
-          type="catalogue"
+          brandType="catalogue"
         />
       }
     </div>

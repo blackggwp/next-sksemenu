@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import Home from "../../components/Home";
 
-export default function Catalogue() {
+export default function Menu() {
   const router = useRouter()
   const { brandid } = router.query
 
@@ -10,7 +10,7 @@ export default function Catalogue() {
       {brandid &&
         <Home
           brandid={brandid}
-          type="catalogue"
+          brandType="menu"
         />
       }
     </div>

@@ -6,7 +6,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import MenuNew from './Menu';
+import Menu from './Menu';
 import { useEffect } from 'react';
 
 function TabPanel(props) {
@@ -22,7 +22,6 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={3}>
-          {/* <Typography>{children}</Typography> */}
           <Typography component={'span'} variant={'body2'}>{children}</Typography>
         </Box>
       )}
@@ -50,14 +49,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Home(props) {
+export default function Home({ brandid, brandType }) {
   const classes = useStyles();
-  let brandid = props.brandid
-  let type = props.type
-
   const [value, setValue] = React.useState('one');
   const [isS81, setIsS81] = React.useState(false);
-
 
   useEffect(() => {
     if (brandid === 'bq-huahin') {
@@ -72,7 +67,7 @@ export default function Home(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" style={brandType === 'catalogue' ? null : { display: "none" }} >
         <Tabs value={value}
           variant="fullWidth"
           onChange={handleChange} aria-label="wrapped label tabs example">
@@ -89,16 +84,16 @@ export default function Home(props) {
       </AppBar>
       {!isS81 &&
         <TabPanel value={value} index="one">
-          <MenuNew
-            brandid={`${brandid}-ovl`}
-            type={type}
+          <Menu
+            brandid={brandType === 'catalogue' ? `${brandid}-ovl` : brandid}
+            brandType={brandType}
           />
         </TabPanel>
       }
       <TabPanel value={value} index="two">
-        <MenuNew
-          brandid={`${brandid}-alc`}
-          type={type}
+        <Menu
+          brandid={brandType === 'catalogue' ? `${brandid}-alc` : brandid}
+          brandType={brandType}
         />
       </TabPanel>
     </div>

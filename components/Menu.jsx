@@ -5,25 +5,28 @@ import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import Image from "next/image";
 import useSWR from "swr";
+import Error from 'next/error';
 
-export default function MenuNew(props) {
+export default function Menu({ brandid, brandType }) {
   const [currentImg, setCurrentImg] = useState('');
   const [isOpen, setIsOpen] = useState(false);
-  let brandid = props.brandid
-  let type = props.type
 
-  const fetcher = (url) => fetch(url).then((res) => res.json());
-  const url = `/api/readfiles?brandid=${brandid}&type=${type}`
-  const { data } = useSWR(url, fetcher)
+  // const fetcher = (url) => fetch(url).then((res) => res.json());
+  const url = `/api/readfiles?brandid=${brandid}&type=${brandType}`
 
+  const fetcher = url => fetch(url).then(r => r.json())
+
+  const { data, error } = useSWR(url, fetcher)
+  if (data?.statusCode || error) return <Error statusCode={data.statusCode} />
+  if (!data) return <div>Loading...</div>
   const renderPic = (imgs) => {
     return (
       <div style={{
         textAlign: '-webkit-center',
         maxWidth: '100%', height: 'auto', cursor: "pointer",
       }}>
-        {imgs ?
-          data.map((img, idx) =>
+        {imgs &&
+          imgs.map((img, idx) =>
             <Image
               key={idx}
               src={img}
@@ -36,8 +39,7 @@ export default function MenuNew(props) {
                 setCurrentImg(img)
               }}
             />)
-          :
-          <Typography variant="h4">Now loading...</Typography>
+
         }
       </div>
     )
